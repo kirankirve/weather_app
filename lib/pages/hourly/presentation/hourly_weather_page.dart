@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:weather_app/core/constants/string_constant.dart';
 import 'package:weather_app/core/widgets/app_text.dart';
 import 'package:weather_app/pages/hourly/application/hourly_weather_provider.dart';
+import 'package:weather_app/pages/settings/application/dashboard_provider.dart';
 
 class HourlyWeatherPage extends StatelessWidget {
   final String selectedLocation;
@@ -56,6 +57,7 @@ class HourlyWeatherPage extends StatelessWidget {
         ) : const Center(child: CircularProgressIndicator()));
   }
 
+
   getHourlyWeather(BuildContext context, bool refresh) async {
     final provider = Provider.of<HourlyWeatherProvider>(context, listen: false);
     if (provider.hourlyWeatherResponse == null || refresh) {
@@ -75,7 +77,8 @@ class HourlyWeatherPage extends StatelessWidget {
   }
 
   String? getTemp(BuildContext context,int index){
-    return '${context.watch<HourlyWeatherProvider>().hourlyWeatherResponse?.forecast?.forecastday?.first.hour?[index].tempF}${StringConstants.tempFarenh}';
+    return context.watch<SettingsProvider>().tempUnitSelection.first ? '${context.watch<HourlyWeatherProvider>().hourlyWeatherResponse?.forecast?.forecastday?.first.hour?[index].tempF}' : '${context.watch<HourlyWeatherProvider>().hourlyWeatherResponse?.forecast?.forecastday?.first.hour?[index].tempC}${StringConstants.tempCelsius}';
+   // return '${context.watch<HourlyWeatherProvider>().hourlyWeatherResponse?.forecast?.forecastday?.first.hour?[index].tempF}${StringConstants.tempFarenh}';
   }
 
   String? getCondition(BuildContext context,int index){
