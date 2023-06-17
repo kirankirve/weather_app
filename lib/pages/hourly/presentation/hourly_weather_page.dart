@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:weather_app/core/constants/string_constant.dart';
 import 'package:weather_app/core/widgets/app_text.dart';
+import 'package:weather_app/core/widgets/section_container.dart';
 import 'package:weather_app/pages/hourly/application/hourly_weather_provider.dart';
 import 'package:weather_app/pages/settings/application/dashboard_provider.dart';
 
@@ -34,7 +35,7 @@ class HourlyWeatherPage extends StatelessWidget {
             padding: const EdgeInsets.all(8),
             itemCount: getCount(context) ?? 0,
             itemBuilder: (BuildContext context, int index) {
-              return Center(
+              return SectionContainer(child: Center(
                   child: Row(children: [
                     Expanded(flex: 2,
                       child: CustomTextWidget(text:
@@ -49,9 +50,9 @@ class HourlyWeatherPage extends StatelessWidget {
                       child: CustomTextWidget(text:
                       ' ${getCondition(context, index)}'),
                     ),
-                  ],));
+                  ],)));
             }, separatorBuilder: (BuildContext context, int index) {
-              return Container(width: double.infinity,height: 2,color: Colors.grey,);
+              return Container(width: double.infinity,height: 0,color: Colors.grey,);
           },
           ),
         ) : const Center(child: CircularProgressIndicator()));

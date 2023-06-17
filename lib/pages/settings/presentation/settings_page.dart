@@ -56,9 +56,15 @@ class SettingsPage extends StatelessWidget {
                         child: AppToggleButtons(
                           selections:
                               context.watch<SettingsProvider>().notificationSelection,
-                          selectedIndex: (index) =>
-                              Provider.of<SettingsProvider>(context, listen: false)
-                                  .updateTempUnitSelection(index: index,type: 2),
+                          selectedIndex: (index) {
+                            Provider.of<SettingsProvider>(context, listen: false)
+                                .updateTempUnitSelection(index: index,type: 2);
+                            if(index == 0){
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: CustomTextWidget(text: 'Notification turned On',),backgroundColor: Colors.green,));
+                            }else{
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: CustomTextWidget(text: 'Notification turned Off',),backgroundColor: Colors.red));
+                            }
+                          },
                           children: [
                             Padding(
                               padding: const EdgeInsets.symmetric(
