@@ -37,15 +37,15 @@ class HttpService {
       }
       var url = Uri.https('api.weatherapi.com', path,map);
       debugPrint('URL --$url');
-      var _ = await http.get(url, /*headers: await _defaultHeader()*/);
-      debugPrint('Response --$_');
-      debugPrint('Response --${jsonDecode(_.body)}');
-      if (_.statusCode >= 400) {
+      var response = await http.get(url, /*headers: await _defaultHeader()*/);
+      debugPrint('Response --$response');
+      debugPrint('Response --${jsonDecode(response.body)}');
+      if (response.statusCode >= 400) {
         return Future.error("Something went wrong");
-      } else if (_.statusCode == 204) {
+      } else if (response.statusCode == 204) {
         return Future.error('No Content');
-      } else if (_.statusCode == 403) {}
-      return Future.value(jsonDecode(_.body));
+      } else if (response.statusCode == 403) {}
+      return Future.value(jsonDecode(response.body));
     } catch (e) {
       debugPrint('Error -- $e');
       return Future.error(e.toString());
@@ -59,17 +59,17 @@ class HttpService {
     try {
       var url = Uri.https(HttpConstants.baseUrl, '$path');
       debugPrint('$url -- authorizationRequired $authorizationRequired');
-      var _ = await http.post(url,
+      var response = await http.post(url,
           body: encodedJSON,
           /*headers: await _defaultHeader(authRequired: authorizationRequired)*/);
-      if (_.statusCode >= 400) {
+      if (response.statusCode >= 400) {
         return Future.error("Something went wrong");
-      } else if (_.statusCode == 403) {
+      } else if (response.statusCode == 403) {
         return Future.error("Something went wrong with permissions");
-      } else if (_.statusCode == 204) {
+      } else if (response.statusCode == 204) {
         return Future.error('No Content');
       }
-      return Future.value(jsonDecode(_.body));
+      return Future.value(jsonDecode(response.body));
     } catch (e) {
       return Future.error(e.toString());
     }
@@ -81,19 +81,19 @@ class HttpService {
       bool authorizationRequired = true}) async {
     try {
       var url = Uri.https(HttpConstants.baseUrl, '$path');
-      var _ = await http.put(url,
+      var response = await http.put(url,
           body: encodedJSON,
           /*headers: await _defaultHeader(authRequired: authorizationRequired)*/);
-      if (_.statusCode >= 400) {
+      if (response.statusCode >= 400) {
         return Future.error("Something went wrong");
       }
-      if (_.statusCode == 403) {
+      if (response.statusCode == 403) {
         return Future.error("Something went wrong with permissions");
       }
-      if (_.statusCode == 204) {
+      if (response.statusCode == 204) {
         return Future.value(jsonDecode('{}'));
       }
-      return Future.value(jsonDecode(_.body));
+      return Future.value(jsonDecode(response.body));
     } catch (e) {
       return Future.error(e.toString());
     }
@@ -103,19 +103,19 @@ class HttpService {
     try {
       var url = Uri.https(HttpConstants.baseUrl, '$path');
       debugPrint(url.path);
-      var _ = await http.delete(url,
+      var response = await http.delete(url,
           body: encodedJSON,/* headers: await _defaultHeader()*/);
-      debugPrint('Body ${_.body} and code ${_.statusCode}');
-      if (_.statusCode >= 400) {
+      debugPrint('Body ${response.body} and code ${response.statusCode}');
+      if (response.statusCode >= 400) {
         return Future.error("Something went wrong");
       }
-      if (_.statusCode == 403) {
+      if (response.statusCode == 403) {
         return Future.error("Something went wrong with permissions");
       }
-      if (_.statusCode == 204 || _.statusCode == 200) {
+      if (response.statusCode == 204 || response.statusCode == 200) {
         return Future.error('No Content');
       }
-      return Future.value(jsonDecode(_.body));
+      return Future.value(jsonDecode(response.body));
     } catch (e) {
       return Future.error(e.toString());
     }
